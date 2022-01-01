@@ -23,6 +23,7 @@ public class Invader {
         this.invaderImageView.setImage(invaderImage);
         this.invaderPoint = invaderPoint;
         this.isKilled = false;
+        imageStream.close();
     }
 
     public void initializeImage() {

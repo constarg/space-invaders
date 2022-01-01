@@ -20,12 +20,10 @@ public class GameRefresh {
     static Timeline refreshTimeline;
     static Timeline generateTimeline;
     static Timeline invadersDownTimeline;
-    static private HashSet<Invader> invaders = null;
-    static private ArrayList<Bullet> bullets;
+    static final private HashSet<Invader> invaders = new HashSet<>();
+    static final private ArrayList<Bullet> bullets = new ArrayList<>();
 
     private static void generateInvaders(Group group) throws IOException {
-        if (invaders == null) invaders = new HashSet<Invader>();
-
         // Generate invader.
         Invader invader_1 = new Invader(
                 EntitiesImages.INVADER_1_IMAGE.getEntityImagePath(),
@@ -73,51 +71,49 @@ public class GameRefresh {
                     bullet.getBulletPoint().getX(),
                     bullet.getBulletPoint().getY());
 
-            if (distance <= 70.0) {
+            if (distance <= 70.0 && !invader.getIsKilled()) {
                 new InvaderKilledEvent().emit(
                         invader,
                         bullet
                 );
             }
+
         });
     }
 
     private static void refreshBullets(Group group) {
-        GameRefresh.bullets.forEach(bullet -> {
+        for (Bullet bullet: bullets) {
             if (bullet.getIsHit()) {
-                GameRefresh.bullets.remove(bullet);
                 group.getChildren().remove(bullet.getBulletShape());
+                GameRefresh.bullets.remove(bullet);
                 return;
             }
             if (bullet.isFired()) {
                 if (!group.getChildren().contains(bullet.getBulletShape()))
                     group.getChildren().add(bullet.getBulletShape());
-
                 bullet.moveBullet();
                 bulletHitInvader(bullet);
 
-                if (bullet.getBulletPoint().getY() >=
-                        DimensionConstants.MAIN_WINDOW_DIMENSION.getEntityDimension().getHeight()) {
+                if (bullet.getBulletPoint().getY() <= 0) {
                     GameRefresh.bullets.remove(bullet);
                     group.getChildren().remove(bullet.getBulletShape());
                 }
             }
-        });
+        }
     }
 
     private static void refreshInvaders(Group group) {
-        GameRefresh.invaders.forEach(invader -> {
+        for (Invader invader: invaders) {
             if (invader.getIsKilled()) {
-                GameRefresh.invaders.remove(invader);
                 group.getChildren().remove(invader.getInvaderImageView());
+                GameRefresh.invaders.remove(invader);
                 return;
             }
-
             invader.moveInvaderDown();
             invader.getInvaderImageView().setY(
                     invader.getInvaderPoint().getY()
             );
-        });
+        }
     }
 
     private static void refreshGun(Gun gun) {
@@ -129,6 +125,17 @@ public class GameRefresh {
         );
     }
 
+    private static void invaderReachBottom() {
+        for (Invader invader: invaders) {
+            if (invader.getInvaderPoint().getY() >=
+                    DimensionConstants.MAIN_WINDOW_DIMENSION.getEntityDimension().getHeight()) {
+                GameRefresh.refreshTimeline.stop();
+                GameRefresh.generateTimeline.stop();
+                GameRefresh.invadersDownTimeline.stop();
+            }
+        }
+    }
+
     public static void gunFiresBullet(Gun gun, Group group) {
         Bullet tmpBullet = gun.prepareBullet();
         tmpBullet.setFired();
@@ -137,8 +144,6 @@ public class GameRefresh {
     }
 
     public static void refreshGame(Group group, Gun gun) {
-        // initialize bullet array.
-        GameRefresh.bullets = new ArrayList<>();
         // init gun image.
         gun.initializeImage();
         group.getChildren().add(gun.getGunImageView());
@@ -164,6 +169,7 @@ public class GameRefresh {
         GameRefresh.refreshTimeline = new Timeline(new KeyFrame(Duration.millis(10), t -> {
             refreshGun(gun);
             refreshBullets(group);
+            invaderReachBottom();
         }));
 
         GameRefresh.refreshTimeline.setCycleCount(Timeline.INDEFINITE);

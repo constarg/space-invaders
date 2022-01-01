@@ -15,7 +15,7 @@ import java.io.InputStream;
 public class Gun {
     private Point gunPoint;
     private final ImageView gunImageView;
-    private final int dx = 10;
+    private final int dx = 20;
 
     public Gun() throws IOException {
         InputStream imageInputStream = new FileInputStream(
@@ -25,6 +25,7 @@ public class Gun {
         this.gunImageView = new ImageView();
         this.gunImageView.setImage(gunImage);
         this.gunPoint = EntitiesInitialPoints.GUN_INIT_POINT.getEntityPoint();
+        imageInputStream.close();
     }
 
     public void initializeImage() {
