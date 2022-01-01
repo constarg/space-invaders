@@ -8,18 +8,20 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class SpaceInvaders extends Application {
     private Scene scene;
     private Group root;
     private Gun gun;
 
-    private void initializeComponents() {
+    private void initializeComponents() throws IOException {
         this.gun = new Gun();
         this.root = new Group();
     }
 
     private void configureUserInterface() {
-        this.scene = UserInterface.configureScene(root, gun);
+        this.scene = UserInterface.configureScene(root, null);
     }
 
     private void configureStage(Stage stage) {
@@ -30,7 +32,7 @@ public class SpaceInvaders extends Application {
     }
 
     @Override
-    public void start(Stage stage) {
+    public void start(Stage stage) throws IOException {
         initializeComponents();
         configureUserInterface();
         configureStage(stage);
