@@ -1,12 +1,13 @@
 package com.game.space_invaders.entities.bullet;
 
 import com.game.space_invaders.costants.DimensionConstants;
-import javafx.geometry.Point2D;
 import javafx.scene.shape.Rectangle;
+
+import java.awt.*;
 
 public class Bullet {
     private final Rectangle bulletShape;
-    private Point2D bulletPoint;
+    private Point bulletPoint;
     private Boolean fired;
 
     public Bullet() {

@@ -4,16 +4,16 @@ import com.game.space_invaders.costants.DimensionConstants;
 import com.game.space_invaders.costants.EntitiesImages;
 import com.game.space_invaders.costants.EntitiesInitialPoints;
 import com.game.space_invaders.entities.bullet.Bullet;
-import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.awt.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 public class Gun {
-    private Point2D gunPoint;
+    private Point gunPoint;
     private final ImageView gunImageView;
 
     public Gun() throws IOException {
@@ -28,7 +28,7 @@ public class Gun {
 
     public void initializeImage() {
         gunImageView.setX(this.gunPoint.getX());
-        gunImageView.setX(this.gunPoint.getY());
+        gunImageView.setY(this.gunPoint.getY());
         gunImageView.setFitWidth(
                 DimensionConstants.GUN_DIMENSION.getEntityDimension().getWidth()
         );
@@ -42,21 +42,21 @@ public class Gun {
         return this.gunImageView;
     }
 
-    public Point2D getGunPoint() {
+    public Point getGunPoint() {
         return this.gunPoint;
     }
 
     public void moveGunRight() {
-        this.gunPoint = new Point2D(
-                this.gunPoint.getX() + 2,
-                this.gunPoint.getY()
+        this.gunPoint = new Point(
+                (int) (this.gunPoint.getX() + 2),
+                (int) this.gunPoint.getY()
         );
     }
 
     public void moveGunLeft() {
-        this.gunPoint = new Point2D(
-                this.gunPoint.getX() - 2,
-                this.gunPoint.getY()
+        this.gunPoint = new Point(
+                (int) (this.gunPoint.getX() - 2),
+                (int) this.gunPoint.getY()
         );
     }
 
