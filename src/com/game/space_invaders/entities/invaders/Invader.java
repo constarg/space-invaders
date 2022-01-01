@@ -14,13 +14,15 @@ import java.io.InputStream;
 public class Invader {
     private final ImageView invaderImageView;
     private Point invaderPoint;
+    private Boolean isKilled;
 
     public Invader(String invaderImagePath, Point invaderPoint) throws IOException {
         InputStream imageStream = new FileInputStream(invaderImagePath);
         Image invaderImage = new Image(imageStream);
-        invaderImageView = new ImageView();
-        invaderImageView.setImage(invaderImage);
+        this.invaderImageView = new ImageView();
+        this.invaderImageView.setImage(invaderImage);
         this.invaderPoint = invaderPoint;
+        this.isKilled = false;
     }
 
     public void initializeImage() {
@@ -48,5 +50,13 @@ public class Invader {
                 (int) this.invaderPoint.getX(),
                 (int) (this.invaderPoint.getY() + 1)
         );
+    }
+
+    public void setIsKilled(Boolean isKilled) {
+        this.isKilled = isKilled;
+    }
+
+    public Boolean getIsKilled() {
+        return this.isKilled;
     }
 }

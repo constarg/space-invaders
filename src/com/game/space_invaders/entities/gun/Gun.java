@@ -15,6 +15,7 @@ import java.io.InputStream;
 public class Gun {
     private Point gunPoint;
     private final ImageView gunImageView;
+    private final int dx = 10;
 
     public Gun() throws IOException {
         InputStream imageInputStream = new FileInputStream(
@@ -48,19 +49,25 @@ public class Gun {
 
     public void moveGunRight() {
         this.gunPoint = new Point(
-                (int) (this.gunPoint.getX() + 2),
+                (int) (this.gunPoint.getX() + dx),
                 (int) this.gunPoint.getY()
         );
     }
 
     public void moveGunLeft() {
         this.gunPoint = new Point(
-                (int) (this.gunPoint.getX() - 2),
+                (int) (this.gunPoint.getX() - dx),
                 (int) this.gunPoint.getY()
         );
     }
 
     public Bullet prepareBullet() {
-        return new Bullet();
+        return new Bullet(
+                new Point(
+                        (int) (this.gunPoint.getX() +
+                                (DimensionConstants.GUN_DIMENSION.getEntityDimension().getWidth() / 2)),
+                        (int) this.gunPoint.getY()
+                )
+        );
     }
 }
