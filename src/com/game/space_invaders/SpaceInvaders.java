@@ -3,6 +3,7 @@ package com.game.space_invaders;
 import com.game.space_invaders.costants.Messages;
 import com.game.space_invaders.entities.gun.Gun;
 import com.game.space_invaders.user_interface.UserInterface;
+import com.game.space_invaders.utils.GameRefresh;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -21,14 +22,15 @@ public class SpaceInvaders extends Application {
     }
 
     private void configureUserInterface() {
-        this.scene = UserInterface.configureScene(root, null);
+        this.scene = UserInterface.configureScene(root, gun);
     }
 
-    private void configureStage(Stage stage) {
+    private void configureStage(Stage stage) throws IOException {
         stage.setTitle(Messages.GAME_TITLE.getMessage());
         stage.setScene(this.scene);
         stage.setResizable(false);
         stage.show();
+        GameRefresh.refreshGame(root, gun);
     }
 
     @Override

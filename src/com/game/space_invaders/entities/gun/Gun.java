@@ -1,46 +1,49 @@
 package com.game.space_invaders.entities.gun;
 
-
 import com.game.space_invaders.costants.DimensionConstants;
 import com.game.space_invaders.costants.EntitiesImages;
 import com.game.space_invaders.costants.EntitiesInitialPoints;
 import com.game.space_invaders.entities.bullet.Bullet;
-import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 public class Gun {
-    private final Image gunImage;
-    private final Dimension2D gunDimensions;
     private Point2D gunPoint;
-    InputStream imageInputStream;
+    private final ImageView gunImageView;
 
     public Gun() throws IOException {
-        this.imageInputStream = new FileInputStream(
+        InputStream imageInputStream = new FileInputStream(
                 EntitiesImages.GUN_IMAGE.getEntityImagePath()
         );
-        gunDimensions = new Dimension2D(
-                DimensionConstants.GUN_DIMENSION.getEntityDimension().getWidth(),
-                DimensionConstants.GUN_DIMENSION.getEntityDimension().getHeight()
-        );
-        this.gunImage = new Image(imageInputStream);
+        Image gunImage = new Image(imageInputStream);
+        this.gunImageView = new ImageView();
+        this.gunImageView.setImage(gunImage);
         this.gunPoint = EntitiesInitialPoints.GUN_INIT_POINT.getEntityPoint();
     }
 
-    public Image getGunImage() {
-        return this.gunImage;
+    public void initializeImage() {
+        gunImageView.setX(this.gunPoint.getX());
+        gunImageView.setX(this.gunPoint.getY());
+        gunImageView.setFitWidth(
+                DimensionConstants.GUN_DIMENSION.getEntityDimension().getWidth()
+        );
+        gunImageView.setFitHeight(
+                DimensionConstants.GUN_DIMENSION.getEntityDimension().getHeight()
+        );
+        gunImageView.setPreserveRatio(true);
+    }
+
+    public ImageView getGunImageView() {
+        return this.gunImageView;
     }
 
     public Point2D getGunPoint() {
         return this.gunPoint;
-    }
-
-    public Dimension2D getGunDimensions() {
-        return this.gunDimensions;
     }
 
     public void moveGunRight() {

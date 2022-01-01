@@ -17,7 +17,7 @@ public class UserInterface {
                 DimensionConstants.MAIN_WINDOW_DIMENSION.getEntityDimension().getHeight()
         );
         scene.setFill(GameColors.BACKGROUND_COLOR.getColor());
-        scene.setOnKeyPressed(KeyBoard.moveGun(gun));
+        scene.setOnKeyPressed(KeyBoard.moveGun(gun, group));
 
         return UserInterface.scene;
     }
